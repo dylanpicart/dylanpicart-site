@@ -11,7 +11,7 @@ section: research
 
 **Neuromatch Academy — NeuroAI 2026 · Team: M. Miandari (TA), S. Bolotta (TA), D. Picart, V. Chokshi, A. G. Caldeira, L. Valenzuela, B. Bustos, S. Afridi, R. Zhou, J. Reback, J. Tabak**
 
-Since brains learn remarkably well despite delays between actions and rewards, can we design artificial networks to do the same — and do it without backpropagation? That is the question at the center of Project TardyGrad. Over one week, our nine-person team benchmarked biologically plausible (bio-plausible) learning rules against the dominant standard — backpropagation — across three experimental conditions: standard MNIST classification, Spiking Neural Networks, and a delayed-reward n-back task.
+Since brains learn remarkably well despite delays between actions and rewards, can we design artificial networks to do the same — and do it without backpropagation? That is the question at the center of Project TardyGrad. Over the summer, our nine-person team benchmarked biologically plausible (bio-plausible) learning rules against the dominant standard — backpropagation — across three experimental conditions: standard MNIST classification, Spiking Neural Networks, and a delayed-reward n-back task.
 
 ---
 

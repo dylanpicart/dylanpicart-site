@@ -1,7 +1,6 @@
 # dylanpicart.com — rebuilt from scratch 🚀
 
-Static Astro site. Hosting is free on GitHub
-Pages; the only remaining cost is the domain itself.
+Static Astro site. To be hosted on GitHub Pages.
 
 ## The stack
 
@@ -34,6 +33,7 @@ title: "Your Post Title"
 description: "One or two sentences — this appears in the hover preview card."
 date: 2026-08-12
 langs: [Python, SQL]
+tags: [Data Engineering, Neuroscience, Data Science]
 published: true
 ---
 
@@ -43,8 +43,7 @@ syntax highlighting and color-coded language tags automatically.
 
 Push to `main`. The site rebuilds and deploys itself in ~2 minutes.
 
-**Update the resume:** replace `public/resume.pdf` with your real PDF (the
-current one is a placeholder). The embed and download button pick it up
+**Update the resume:** replace `public/resume.pdf` with real PDF. The embed and download button pick it up
 automatically. Update the timeline bullets in `src/pages/index.astro`.
 
 ## EDIT ME checklist (before going live)

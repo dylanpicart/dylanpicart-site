@@ -158,7 +158,7 @@ import Base from '../layouts/Base.astro';
         <p class="meta">Data Science · Python · Bangladesh Dataset · Jul 2024</p>
         <ul>
           <li>Implemented a complete supervised classification pipeline on a Bangladeshi online education dataset — from hypothesis through EDA, One-Hot Encoding, and feature engineering to <strong>Naïve Bayes, KNN, and Random Forest</strong> classifiers evaluated via confusion matrices, cross-validation, and A/B testing across Low, Moderate, and High adaptability levels; Random Forest achieved the highest average <strong>F1 score of 0.837</strong>.</li>
-          <li>Trained and evaluated <strong>Naïve Bayes, K-Nearest Neighbors, and Random Forest</strong> classifiers across three adaptability levels (Low, Moderate, High), with oversampling/undersampling strategies to address class imbalance; Random Forest achieved the highest average <strong>F1 score of 0.837</strong>, selected via comparative A/B testing.</li>
+          <li>Addressed significant class imbalance across adaptability levels using <strong>RandomOverSampler and RandomUnderSampler</strong> strategies, then selected the final model via A/B testing across 100 cross-validation iterations; Random Forest's <strong>F1 of 0.837</strong> outperformed KNN (0.803) and Naïve Bayes (0.685) across all three classes.</li>
         </ul>
         <p>
           <span class="chip python">Python</span>

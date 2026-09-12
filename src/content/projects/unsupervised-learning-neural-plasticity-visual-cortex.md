@@ -9,7 +9,7 @@ featured: false
 section: research
 ---
 
-**Neuromatch Academy — Computational Neuroscience 2025 · Group A**  
+**Neuromatch Academy — Computational Neuroscience 2025**  
 **Team: K. Kumar (TA), S. Rezvani (TA), D. Picart, M. Hemmati, S. Elhassa, C. Bayar, R. Nathaniel, A. Oladokun, N. Karimova, M. Finch, Y. Ouattara · Mentor: B. Mohar**
 
 ---

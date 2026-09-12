@@ -97,7 +97,7 @@ a { color: var(--ink); text-underline-offset: 3px; }
 
 /* ---------- Pipeline spine (the DE signature) ---------- */
 .spine {
-  position: fixed; left: 2rem; top: 0; bottom: 0;
+  position: fixed; right: 2rem; top: 0; bottom: 0;
   width: 2px; z-index: 10; pointer-events: none;
 }
 .spine .track {
@@ -124,7 +124,7 @@ a { color: var(--ink); text-underline-offset: 3px; }
   box-shadow: 0 0 0 5px rgba(28, 27, 34, 0.12);
 }
 .spine .node span {
-  position: absolute; left: 1.2rem; top: -0.2rem;
+  position: absolute; right: 1.2rem; top: -0.2rem;
   font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--ink-soft);
   opacity: 0; transition: opacity 0.3s;
