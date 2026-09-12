@@ -272,9 +272,10 @@ a { color: var(--ink); text-underline-offset: 3px; }
 }
 .tl-item { position: relative; margin-bottom: 2.6rem; }
 .tl-item::before {
-  content: ''; position: absolute; left: -2.42rem; top: 0.4rem;
-  width: 12px; height: 12px; border-radius: 50%;
+  content: ''; position: absolute; left: -2rem; top: 0.4rem;
+  width: 10px; height: 10px; border-radius: 50%;
   background: var(--ink);
+  margin-left: -4px;
 }
 .tl-item h3 { margin: 0 0 0.1rem; }
 .tl-item .meta { font-size: 0.85rem; font-weight: 600; color: var(--ink-soft); }

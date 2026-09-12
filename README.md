@@ -76,3 +76,7 @@ public/resume.pdf            ← your resume (replace the placeholder!)
 
 The pipeline spine on the left is the site's quiet signature: source →
 extract → transform → load → sink, one node per section, drawn as you scroll.
+
+## License
+
+The source code of this site is licensed under the [MIT License](LICENSE). Blog post content, writing, and original research are copyright © 2026 Dylan K. Picart — all rights reserved.
