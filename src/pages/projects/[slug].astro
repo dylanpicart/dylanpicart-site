@@ -1,0 +1,48 @@
+---
+// [slug].astro — renders every project post from src/content/projects/
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  // Drafts (published: false) are not built at all — flip the flag
+  // in the post's frontmatter when it's ready to go live.
+  return projects
+    .filter((p) => p.data.published)
+    .map((p) => ({
+      params: { slug: p.id },
+      props: { project: p },
+    }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const fmt = project.data.date.toLocaleDateString('en-US', {
+  month: 'long', day: 'numeric', year: 'numeric',
+});
+---
+<Base title={`${project.data.title} — Dylan K. Picart`} description={project.data.description}>
+  <article class="post">
+    <header>
+      <p><a href="/#projects">← All projects</a></p>
+      <h1>{project.data.title}</h1>
+      <p style="color: var(--ink-soft); font-weight: 600;">{fmt}</p>
+      <p>
+        {project.data.langs.map((lang) => (
+          <span class={`chip ${lang.toLowerCase()}`}>{lang}</span>
+        ))}
+      </p>
+      {project.data.tags.length > 0 && (
+        <p>
+          {project.data.tags.map((tag) => (
+            <span class="tag-pill">{tag}</span>
+          ))}
+        </p>
+      )}
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>

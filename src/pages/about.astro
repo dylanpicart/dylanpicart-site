@@ -1,0 +1,145 @@
+---
+// about.astro — the full story, migrated from the WordPress About page.
+// The profile photo and skill stack reveal on scroll (.reveal → GSAP).
+import Base from '../layouts/Base.astro';
+---
+<Base title="About — Dylan K. Picart">
+  <article class="post">
+    <header>
+      <h1>About</h1>
+      <p style="color: var(--ink-soft); font-weight: 600;">
+        Physicist and philosopher by training. Community-driven by design.
+      </p>
+    </header>
+
+    <div class="prose">
+      <p>
+        I'm a Data Engineer and researcher with a background in
+        <strong>physics and philosophy</strong>, a combination that shapes how I
+        approach every system I build: <strong>Analytical rigor, ethical
+        intentionality, and a genuine commitment to the communities</strong> the
+        data represents.
+      </p>
+
+      <!-- The portrait reveals as you scroll to it -->
+      <div class="reveal portrait-wrap">
+        <img class="portrait" src="/images/profile.jpg"
+             alt="Dylan K. Picart" width="360" loading="lazy" />
+      </div>
+
+      <p>
+        My work sits at the intersection of <strong>modern data engineering,
+        scientific research, and social impact</strong>. I design
+        <strong>cloud-native ETL/ELT</strong> pipelines, <strong>real-time
+        streaming</strong> architectures, and AI-assisted analytics platforms
+        that help mission-driven organizations turn fragmented, complex data
+        into trustworthy, decision-ready insights. Recent work includes a
+        real-time school climate and social vulnerability research platform
+        investigating whether school climate indicators predict community
+        vulnerability, independent citizen science research on SARS-CoV-2 RNA
+        concentration patterns across 14 NYC wastewater sites, and
+        peer-reviewed <strong>NLP</strong> research on large-scale image
+        captioning datasets.
+      </p>
+      <p>
+        Technically, I specialize in Python, SQL, Bash, PySpark, Snowflake,
+        Databricks, Kafka, dbt, and Airflow, with production experience across
+        GCP, AWS, and Azure. I've designed <strong>FERPA</strong> and
+        <strong>HIPAA</strong>-aligned data governance frameworks, built RAG
+        services using LangChain and vector databases, and developed NLP and
+        classification models in PyTorch and scikit-learn.
+      </p>
+      <p>
+        I also believe deeply in <strong>science communication and accessible
+        education</strong>. I also believe deeply in science communication and 
+        accessible education. As a Technical Instructor at The Knowledge House, 
+        I currently teach Python, data science, web development, generative AI, 
+        prompt engineering, and cybersecurity to teen and adult learners — and 
+        I've developed responsible AI and digital literacy curriculum covering 
+        AI bias, cultural representation, privacy, and secure technology use. 
+        Before that: ecology and environmental science in wilderness settings, 
+        robotics and programming across all ages. Whether I'm designing a 
+        medallion pipeline or facilitating a hands-on workshop, the goal is the 
+        same: translate complexity into something that empowers people to 
+        understand and act on the world around them.
+      </p>
+      <p>
+        I care about <strong>data transparency, equity, and
+        infrastructure</strong> that serves people rather than just processes.
+        Whether I'm reconciling multi-source datasets to within 0.5% margin of
+        error for grant reporting, migrating ten years of protected student
+        records for social workers, or building dashboards that help leadership
+        understand program impact across underserved communities, the through
+        line is always the same: <strong>Data should strengthen trust and
+        enable meaningful action.</strong>
+      </p>
+      <p>
+        Outside of engineering, you'll find me <strong>running long distances,
+        scuba diving, surfing, swimming, or practicing mindfulness</strong>.
+        I'm always exploring unconventional learning pathways and curious,
+        interdisciplinary conversations.
+      </p>
+
+      <h2>Skills</h2>
+      <div class="reveal" style="text-align: center;">
+        <img src="/images/skill-stack-logos.png" alt="Python, SQL, R, Bash, C, JavaScript, HTML, and CSS logos"
+             width="440" loading="lazy" style="border: none; background: transparent;" />
+      </div>
+      <div class="card">
+        <p><strong>Programming Languages:</strong> Python, SQL, Bash, R, C, YAML, Jinja2, JavaScript/TypeScript, HTML, CSS, Visual Basic, MATLAB</p>
+        <p><strong>Data Analysis Tools:</strong> NumPy, Pandas, Matplotlib, Seaborn, Plotly, PowerBI, Tableau, ArcGIS, Excel</p>
+        <p><strong>Machine Learning Frameworks:</strong> Scikit-learn, PyTorch, TensorFlow, Keras, LangChain, OpenAI API (LLMs &amp; embeddings), Vector Databases (Chroma), Prompt Engineering, Retrieval-Augmented Generation (RAG)</p>
+        <p><strong>Data Engineering Tools:</strong> PySpark, Databricks, Delta Lake, dbt, Kafka, Snowflake, PostgreSQL, MongoDB, GraphQL, Hadoop, Apache Airflow, FastAPI microservices, Data Modeling (Bronze → Silver → Gold), Semantic Layer Design</p>
+        <p><strong>Cloud, CRM, &amp; Version Control:</strong> GCP (GCS, Dataproc, IAM), AWS (S3, EMR), Azure, Docker, Terraform (IaC), Git, GitHub Actions (CI/CD), REST APIs, React/TypeScript (Vite), Full-stack Integration (API + Vector DB + LLM + UI), Salesforce, SharePoint, LaTeX, Apricot</p>
+        <p style="margin-bottom: 0;"><strong>Soft Skills:</strong> Problem solving, detailed, team-oriented, business, scientific, and technical communication, ethical critical thinking, adaptable, leadership, conflict resolution</p>
+      </div>
+
+      <h2>Education</h2>
+      <p>
+        <strong>Adelphi University</strong> — B.S. Physics, Minor in Philosophy
+        (2014–2018). Specialization in Engineering, AI, and Data Analysis with
+        advanced mathematics foundations. Year-round NCAA D-II Cross Country and
+        Track &amp; Field athlete.
+      </p>
+      <p>
+        <strong>Fellowships &amp; Continuing Experience:</strong> Program Earth
+        Software Engineering Fellow (2024–Present) · TKH Data Science AEP
+        Fellow, Data Engineering Track (2024) · TEC Innovate Google Fellow
+        (2024) · CUNY GIS Research (2023)
+      </p>
+
+      <h2>Publications</h2>
+      <p>
+        Krotov, A., Tebo, A., <strong>Picart, D.</strong>, Algave, A. (2024).
+        <em>Evaluating authenticity and quality of image captions via sentiment
+        and semantic analyses.</em>
+        <a href="https://arxiv.org/abs/2409.09560">arXiv:2409.09560</a>
+      </p>
+      <p>
+        <strong>Picart, D.</strong> (2018). <em>Method of Gas Detection
+        Insensitive to Vibration.</em> Wright's Research Lab.
+      </p>
+
+      <p style="margin-top: 3rem;">
+        If you'd like to collaborate, brainstorm, or connect over data, AI, or
+        community-focused innovation, feel free to
+        <a href="/#contact">reach out</a> — I'd love to chat.
+      </p>
+      <p>
+        <a class="btn" href="/resume/">See the full resume →</a>
+        &nbsp;
+        <a class="btn" href="https://github.com/dylanpicart">GitHub →</a>
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .portrait-wrap { text-align: center; margin: 2.5rem 0; }
+  .portrait {
+    width: min(360px, 80%);
+    border-radius: 18px;
+    border: 2px solid var(--ink) !important;
+    box-shadow: 8px 8px 0 rgba(28, 27, 34, 0.15);
+  }
+</style>

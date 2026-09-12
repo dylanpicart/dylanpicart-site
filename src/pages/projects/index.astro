@@ -1,0 +1,81 @@
+---
+// projects/index.astro — browseable catalog, split into Professional and Research
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const all = (await getCollection('projects'))
+  .filter((p) => p.data.published)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const professional = all.filter((p) => p.data.section === 'professional');
+const research     = all.filter((p) => p.data.section === 'research');
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+---
+<Base title="Projects — Dylan K. Picart">
+  <section>
+    <h1>Projects</h1>
+    <p style="color: var(--ink-soft); max-width: 40rem;">
+      Field notes from real pipelines and published research — with the code that ran them.
+    </p>
+
+    <!-- ── Professional Work ────────────────────────────────── -->
+    <h2 style="margin-top: 3rem; font-size: 1.15rem; font-weight: 800;
+               letter-spacing: 0.1em; text-transform: uppercase;
+               color: var(--ink-soft);">Professional Work</h2>
+
+    <div class="projects-grid" style="display: grid; gap: 1.4rem; margin-top: 1rem;">
+      {professional.map((p) => (
+        <a href={`/projects/${p.id}/`} class="card reveal" style="text-decoration: none; display: block;">
+          <p class="meta" style="font-size: 0.8rem; font-weight: 700; color: var(--ink-soft); margin: 0 0 0.4rem; letter-spacing: 0.06em; text-transform: uppercase;">
+            {fmt(p.data.date)}
+          </p>
+          <h2 style="margin: 0 0 0.5rem; font-size: 1.35rem;">{p.data.title}</h2>
+          <p style="color: var(--ink-soft); margin: 0 0 0.8rem;">{p.data.description}</p>
+          <p style="margin: 0 0 0.5rem;">
+            {p.data.langs.map((lang) => (
+              <span class={`chip ${lang.toLowerCase()}`}>{lang}</span>
+            ))}
+          </p>
+          {p.data.tags.length > 0 && (
+            <p style="margin: 0;">
+              {p.data.tags.map((tag) => (
+                <span class="tag-pill">{tag}</span>
+              ))}
+            </p>
+          )}
+        </a>
+      ))}
+    </div>
+
+    <!-- ── Research ─────────────────────────────────────────── -->
+    <h2 style="margin-top: 4rem; font-size: 1.15rem; font-weight: 800;
+               letter-spacing: 0.1em; text-transform: uppercase;
+               color: var(--ink-soft);">Research</h2>
+
+    <div class="projects-grid" style="display: grid; gap: 1.4rem; margin-top: 1rem;">
+      {research.map((p) => (
+        <a href={`/projects/${p.id}/`} class="card reveal" style="text-decoration: none; display: block;">
+          <p class="meta" style="font-size: 0.8rem; font-weight: 700; color: var(--ink-soft); margin: 0 0 0.4rem; letter-spacing: 0.06em; text-transform: uppercase;">
+            {fmt(p.data.date)}
+          </p>
+          <h2 style="margin: 0 0 0.5rem; font-size: 1.35rem;">{p.data.title}</h2>
+          <p style="color: var(--ink-soft); margin: 0 0 0.8rem;">{p.data.description}</p>
+          <p style="margin: 0 0 0.5rem;">
+            {p.data.langs.map((lang) => (
+              <span class={`chip ${lang.toLowerCase()}`}>{lang}</span>
+            ))}
+          </p>
+          {p.data.tags.length > 0 && (
+            <p style="margin: 0;">
+              {p.data.tags.map((tag) => (
+                <span class="tag-pill">{tag}</span>
+              ))}
+            </p>
+          )}
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,428 @@
+/* ============================================================
+   global.css — design tokens + site-wide styles
+   Gradient hexes sampled directly from dylanpicart.com
+   ============================================================ */
+
+:root {
+  /* --- The gradient (sampled from the live WordPress site) --- */
+  --g-pink:  #FFD0FB;
+  --g-lemon: #FFFFCC;
+  --g-mint:  #CFFFE9;
+  --gradient: linear-gradient(135deg, var(--g-pink) 0%, var(--g-lemon) 50%, var(--g-mint) 100%);
+
+  /* --- Ink & surfaces --- */
+  --ink:       #1c1b22;
+  --ink-soft:  #4a4854;
+  --card:      rgba(255, 255, 255, 0.55);   /* frosted card on gradient */
+  --card-line: rgba(28, 27, 34, 0.14);
+
+  /* --- Language colors (same system as your teaching materials) --- */
+  --lang-python: #2e7d32;
+  --lang-sql:    #6a3fb5;
+  --lang-js:     #b8860b;
+  --lang-bash:   #3c6e71;
+  --lang-html:   #e34f26;
+  --lang-css:    #2965f1;
+
+  --radius: 14px;
+  --max-w: 68rem;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+  background: var(--gradient) fixed;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Layout ---------- */
+main { max-width: var(--max-w); margin: 0 auto; padding: 0 1.25rem; }
+
+section { padding: 5.5rem 0; scroll-margin-top: 5rem; }
+
+h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; }
+h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 800; margin: 0.4em 0; }
+h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 700; }
+
+a { color: var(--ink); text-underline-offset: 3px; }
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.5rem;
+  backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--g-lemon) 35%, transparent);
+  border-bottom: 1px solid var(--card-line);
+}
+.nav .brand {
+  font-weight: 800; letter-spacing: 0.06em; text-decoration: none;
+  display: flex; align-items: center; gap: 0.65rem;
+}
+.brand-logo {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+}
+
+/* ---- Article topic tags ---- */
+.tag-pill {
+  display: inline-block;
+  margin: 0 0.3rem 0.3rem 0;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: transparent;
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+}
+
+/* ---- Projects page: hovering one card dims the rest ----
+   Same idea as the homepage list, kept in the card style. */
+@media (hover: hover) {
+  .projects-grid:hover > .card { opacity: 0.35; }
+  .projects-grid > .card { transition: opacity 0.25s ease, transform 0.25s ease; }
+  .projects-grid > .card:hover { opacity: 1; transform: translateY(-4px); }
+}
+.nav ul { display: flex; gap: 1.4rem; list-style: none; margin: 0; padding: 0; }
+.nav a { text-decoration: none; font-weight: 600; font-size: 0.92rem; }
+.nav a:hover { text-decoration: underline; }
+
+/* ---------- Pipeline spine (the DE signature) ---------- */
+.spine {
+  position: fixed; left: 2rem; top: 0; bottom: 0;
+  width: 2px; z-index: 10; pointer-events: none;
+}
+.spine .track {
+  position: absolute; inset: 0;
+  background: rgba(28, 27, 34, 0.12);
+}
+.spine .flow {
+  position: absolute; inset: 0;
+  background: var(--ink);
+  transform-origin: top;
+  transform: scaleY(0);           /* GSAP draws this as you scroll */
+}
+.spine .node {
+  position: absolute; left: 50%;
+  width: 12px; height: 12px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: var(--g-lemon);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.spine .node.active {
+  background: var(--ink);
+  box-shadow: 0 0 0 5px rgba(28, 27, 34, 0.12);
+}
+.spine .node span {
+  position: absolute; left: 1.2rem; top: -0.2rem;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-soft);
+  opacity: 0; transition: opacity 0.3s;
+  white-space: nowrap;
+}
+.spine .node.active span { opacity: 1; }
+@media (max-width: 900px) { .spine { display: none; } }
+
+/* ---------- Hero ---------- */
+.hero { min-height: 82vh; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+.hero .kicker { font-weight: 600; letter-spacing: 0.08em; color: var(--ink-soft); }
+.hero .slogan { font-size: clamp(1.15rem, 2.4vw, 1.5rem); font-weight: 700; margin-top: 0.5rem; }
+.hero .mission {
+  max-width: 42rem; margin: 1.4rem auto 0;
+  padding-left: 1rem; border-left: 3px solid var(--ink);
+  text-align: left; color: var(--ink-soft);
+}
+.hero .word { display: inline-block; }   /* GSAP staggers these */
+
+/* ---------- Frosted cards ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-line);
+  border-radius: var(--radius);
+  padding: 1.6rem;
+  backdrop-filter: blur(6px);
+}
+
+/* ---------- Project list (GSAP hover reveal) ---------- */
+.project-list { list-style: none; margin: 0; padding: 0; }
+.project-list li { border-bottom: 1px solid var(--card-line); }
+.project-list a {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  padding: 1.5rem 0.25rem;
+  text-decoration: none;
+  font-size: clamp(1.15rem, 2.6vw, 1.7rem);
+  font-weight: 700;
+  transition: opacity 0.25s, transform 0.25s;
+}
+.project-list a .date { font-size: 0.8rem; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+.project-list.dimmed a { opacity: 0.25; }
+.project-list.dimmed li:hover a { opacity: 1; transform: translateX(6px); }
+
+/* Floating preview card that follows the cursor */
+.preview {
+  position: fixed; z-index: 40; pointer-events: none;
+  width: 270px; padding: 1rem 1.2rem;
+  background: var(--ink); color: #fff;
+  border-radius: var(--radius);
+  opacity: 0; transform: scale(0.9);
+  font-size: 0.9rem; line-height: 1.5;
+}
+.preview .chips { margin-top: 0.6rem; }
+
+/* ---------- Language chips (shared system) ---------- */
+.chip {
+  display: inline-block; margin: 0 0.3rem 0.3rem 0;
+  padding: 0.12rem 0.6rem; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 700; color: #fff;
+  background: var(--ink-soft);
+}
+.chip.python { background: var(--lang-python); }
+.chip.sql    { background: var(--lang-sql); }
+.chip.javascript, .chip.js { background: var(--lang-js); }
+.chip.bash   { background: var(--lang-bash); }
+.chip.html   { background: var(--lang-html); }
+.chip.css    { background: var(--lang-css); }
+
+/* ---------- Resume ---------- */
+.resume-embed {
+  width: 100%; height: 78vh;
+  border: 1px solid var(--card-line); border-radius: var(--radius);
+  background: #fff;
+}
+.btn {
+  display: inline-block; margin-top: 1rem;
+  padding: 0.7rem 1.4rem; border-radius: 999px;
+  background: var(--ink); color: #fff;
+  font-weight: 700; text-decoration: none;
+}
+
+/* Timeline */
+.timeline { position: relative; margin-top: 3.5rem; padding-left: 2rem; }
+.timeline::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px; background: var(--ink);
+}
+.tl-item { position: relative; margin-bottom: 2.6rem; }
+.tl-item::before {
+  content: ''; position: absolute; left: -2.42rem; top: 0.4rem;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--ink);
+}
+.tl-item h3 { margin: 0 0 0.1rem; }
+.tl-item .meta { font-size: 0.85rem; font-weight: 600; color: var(--ink-soft); }
+.tl-item ul { margin: 0.6rem 0 0.4rem; padding-left: 1.1rem; }
+.tl-item li { margin: 0.35rem 0; }
+
+/* ---------- Blog post pages ---------- */
+.post { max-width: 46rem; margin: 0 auto; }
+.post header { margin: 3rem 0 2rem; }
+.post .prose { font-size: 1.05rem; }
+.post .prose h2 { margin-top: 2.4rem; }
+
+/* ---- Image carousel ---- */
+.img-carousel {
+  margin: 1.5rem 0;
+  border: 1px solid var(--card-line);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.55);
+  overflow: hidden;
+}
+.img-carousel figure {
+  margin: 0;
+  padding: 0;
+}
+.img-carousel figure[hidden] { display: none; }
+.img-carousel img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 0;
+  border: none;
+  background: #fff;
+}
+.img-carousel figcaption {
+  padding: 0.45rem 0.9rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-align: center;
+  border-top: 1px solid var(--card-line);
+}
+.img-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.6rem;
+  border-top: 1px solid var(--card-line);
+  background: rgba(255,255,255,0.7);
+}
+.carousel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.9rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.carousel-btn:hover:not(:disabled) {
+  background: var(--ink);
+  color: #fff;
+}
+.carousel-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.carousel-counter {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  min-width: 3.5rem;
+  text-align: center;
+}
+
+/* ---- Images inside posts: never wider than the text column ---- */
+.prose img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 10px;
+  border: 1px solid var(--card-line);
+  background: #fff;
+}
+
+/* ---- Horizontal scroll for extra-wide figures ----
+   Wrap an <img> in <div class="scroll-x"> to show it at natural
+   size with a horizontal scrollbar instead of shrinking it. */
+.scroll-x {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border: 1px solid var(--card-line);
+  border-radius: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+.scroll-x img {
+  max-width: none;      /* natural width — this is the whole point */
+  display: block;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+.scroll-x::after {
+  content: '⟷ scroll';
+  display: block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+
+/* ---- Tables: a box around every value ---- */
+.prose table {
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.92rem;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.6);
+}
+.prose th, .prose td {
+  border: 1px solid var(--card-line);
+  padding: 0.5rem 0.8rem;
+  text-align: left;
+}
+.prose th {
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+}
+.prose tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.85); }
+.prose tbody tr:hover { background: var(--g-lemon); }
+
+/* Code boxes: Shiki emits <pre data-language="...">.
+   We label each box with its language, color-coded — same
+   system as the language chips. */
+.prose pre {
+  position: relative;
+  border-radius: var(--radius);
+  padding: 2.4rem 1.2rem 1.2rem;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+.prose pre::before {
+  content: attr(data-language);
+  position: absolute; top: 0.6rem; left: 1rem;
+  padding: 0.05rem 0.6rem; border-radius: 999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: #fff; background: var(--ink-soft);
+}
+.prose pre[data-language="python"]::before { background: var(--lang-python); }
+.prose pre[data-language="sql"]::before    { background: var(--lang-sql); }
+.prose pre[data-language="js"]::before,
+.prose pre[data-language="javascript"]::before { background: var(--lang-js); }
+.prose pre[data-language="bash"]::before   { background: var(--lang-bash); }
+.prose pre[data-language="html"]::before   { background: var(--lang-html); }
+.prose pre[data-language="css"]::before    { background: var(--lang-css); }
+
+/* ---------- Contact ---------- */
+.contact-form { display: grid; gap: 0.8rem; max-width: 32rem; }
+.contact-form .field-wrap { display: flex; flex-direction: column; gap: 0.25rem; }
+.contact-form label { font-weight: 700; font-size: 0.9rem; }
+.contact-form input, .contact-form textarea {
+  padding: 0.8rem; border: 1px solid var(--card-line); border-radius: 10px;
+  font: inherit; background: rgba(255, 255, 255, 0.7);
+  transition: border-color 0.2s;
+}
+.contact-form input:focus, .contact-form textarea:focus {
+  outline: none; border-color: var(--ink); border-width: 2px;
+}
+.contact-form input.invalid, .contact-form textarea.invalid {
+  border-color: var(--html-orange); border-width: 2px;
+}
+.field-error {
+  display: none; font-size: 0.82rem; font-weight: 600;
+  color: var(--html-orange);
+}
+.char-count {
+  font-size: 0.78rem; font-weight: 600;
+  color: var(--ink-soft); text-align: right;
+}
+.contact-form button {
+  padding: 0.8rem; border: none; border-radius: 999px;
+  background: var(--ink); color: #fff; font-weight: 700; font-size: 1rem;
+  cursor: pointer; transition: opacity 0.2s;
+}
+.contact-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+footer {
+  text-align: center; padding: 3rem 1rem 2rem;
+  font-size: 0.85rem; color: var(--ink-soft);
+}
+
+/* ---------- Motion safety ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation: none !important; transition: none !important; }
+}

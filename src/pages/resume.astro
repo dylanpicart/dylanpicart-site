@@ -1,0 +1,191 @@
+---
+// resume.astro — the full picture. PDF pops first; scrolling reveals
+// the complete expanded experience, projects, education, publications.
+import Base from '../layouts/Base.astro';
+---
+<Base title="Resume — Dylan K. Picart">
+  <section>
+    <h1>Resume</h1>
+
+    <!-- ============ Act 1: the PDF ============ -->
+    <embed class="resume-embed" src="/resume.pdf" type="application/pdf" />
+    <a class="btn" href="/resume.pdf" download="Dylan_Picart_DE_Resume.pdf">Download PDF</a>
+
+    <!-- ============ Act 2: the expanded experience ============ -->
+    <h2 style="margin-top: 4.5rem;">Professional Experience</h2>
+    <div class="timeline">
+
+      <div class="tl-item reveal">
+        <h3>Partnership With Children</h3>
+        <p class="meta">Data Analytics &amp; Engineering Intern · Jan 2025 – Jan 2026 · NYC</p>
+        <ul>
+          <li>Engineered a <strong>FERPA-compliant automated ETL pipeline</strong> in Python, JavaScript, and Bash to migrate protected student records from Apricot into SharePoint, reducing a month-long manual workflow to 7 minutes while maintaining data integrity and real-time access.</li>
+          <li>Developed a secure <strong>Azure-hosted Streamlit dashboard</strong> with Docker and Microsoft SSO that gave leadership reliable visibility into program performance — informing grant renewals, staffing allocation, and program expansion across NYC schools, supported by VBA automation and GitHub Actions CI/CD.</li>
+          <li>Consolidated <strong>10+ years of NYSED, InfoHub, and internal program datasets</strong> using advanced SQL joins and unions, validating and reconciling discrepancies to within 0.5% margin of error and standardizing metrics supporting grant reporting and district evaluations across 30,000+ students in New York City.</li>
+          <li>Migrated the entire Apricot case-management platform — 10+ years of FERPA- and HIPAA-sensitive records — into <strong>Salesforce across 32 NYC schools</strong>, partnering with non-technical stakeholders to design SOQL-driven notification Flows that fit their actual workflows, and established data governance standards adopted organization-wide.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip js">JavaScript</span>
+          <span class="chip sql">SQL</span>
+          <span class="chip bash">Bash</span>
+          <span class="chip">Azure</span>
+          <span class="chip">Docker</span>
+          <span class="chip">Streamlit</span>
+          <span class="chip">Salesforce</span>
+        </p>
+      </div>
+
+      <div class="tl-item reveal">
+        <h3>Neuromatch</h3>
+        <p class="meta">NeuroAI · Computational Neuroscience · Deep Learning Researcher · Summers 2024 – 2026</p>
+        <ul>
+          <li><strong>2026 (NeuroAI):</strong> Implemented <strong>Node Perturbation learning</strong> on a multilayer perceptron for Project TardyGrad, benchmarking biologically plausible learning against Backprop and Hebbian learning on MNIST classification; NP achieved <strong>99% test accuracy on par with Backprop</strong> in the ANN setting, with degraded performance under spiking neuron conditions identifying a meaningful boundary for gradient-free learning.</li>
+          <li><strong>2025 (Computational Neuroscience):</strong> Fit <strong>Generalized Linear Models to mouse visual cortex recordings</strong> spanning V1 and higher visual areas, decoding behavioral outcomes including lick and reward events and encoding neural responses to visual stimuli across learning stages, extending findings from Zhong et al. (Nature, 2025); co-authored an Impact Scholars proposal designing a temporal-difference learning extension targeting reward anticipation and prediction error signals in anterior HVAs.</li>
+          <li><strong>2024 (Deep Learning):</strong> Built end-to-end pipelines in Python and Pandas to ingest, join, and transform <strong>1.5M+ COCO-MS image captions</strong>; fine-tuned and validated <strong>RoBERTa, BERT, and BLIP</strong> with PyTorch and HuggingFace, applying MLR and cosine similarity metrics to extract object-category sentiment patterns — results contributed to a peer-reviewed publication (<a href="https://arxiv.org/abs/2409.09560">arXiv:2409.09560</a>).</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip">PyTorch</span>
+          <span class="chip">HuggingFace</span>
+          <span class="chip">Pandas</span>
+          <span class="chip">GLMs</span>
+        </p>
+      </div>
+
+      <div class="tl-item reveal">
+        <h3>Annalect</h3>
+        <p class="meta">Data Engineering Apprentice · Aug 2022 – Nov 2022</p>
+        <ul>
+          <li>Optimized large-scale <strong>Airflow-orchestrated pipelines</strong> for pharma and media clients by restructuring Jinja2 templates, modifying existing DAGs, and refactoring event-driven AWS Lambda trigger logic — <strong>reducing data latency by 30%</strong>.</li>
+          <li>Contributed to ETL/ELT workflow automation across AWS (Lambda, EMR, S3, Redshift, Glue) and PostgreSQL, leveraging <strong>PySpark and Redshift Spectrum to process terabyte-scale data</strong>, supporting pipelines driving a 10% CPA drop and 12% performance lift across client pipelines.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip sql">SQL</span>
+          <span class="chip">Apache Airflow</span>
+          <span class="chip">AWS</span>
+          <span class="chip">PySpark</span>
+          <span class="chip">PostgreSQL</span>
+        </p>
+      </div>
+
+      <div class="tl-item reveal">
+        <h3>The Knowledge House</h3>
+        <p class="meta">Technical Instructor · Aug 2025 – Present</p>
+        <ul>
+          <li>Designed and facilitated hands-on technical instruction for teen and adult learners across Python, Jupyter, introductory data science, HTML/CSS/JavaScript, Git/GitHub, generative AI, prompt engineering, and cybersecurity, translating complex concepts into accessible, project-based lessons grounded in inquiry, productive struggle, and real-world applications.</li>
+          <li>Developed and delivered responsible AI and digital literacy curricula on AI bias, cultural representation, privacy, hallucinations, prompt design, phishing detection, and secure technology use; coached learners through technical projects while collaborating with curriculum and instructional leadership to strengthen classroom engagement, learner confidence, and skill.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip js">JavaScript</span>
+          <span class="chip">Git/GitHub</span>
+          <span class="chip">Asana</span>
+          <span class="chip">Figma</span>
+          <span class="chip">Jupyter</span>
+          <span class="chip">Generative AI</span>
+          <span class="chip">Cybersecurity</span>
+        </p>
+        <p class="meta">Data Science Fellow · Sep 2021 – Sep 2022</p>
+        <ul>
+          <li>Built <strong>ETL pipelines in Python and Bash</strong> to ingest and clean 500+ alumni records, integrated Google API for user authentication and data ingestion, and conducted exploratory data analysis — including geospatial engagement patterns with Pandas — supporting a <strong>20% increase in platform user engagement</strong> in a cross-functional team environment.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip sql">SQL</span>
+          <span class="chip bash">Bash</span>
+          <span class="chip">HTML/CSS</span>
+          <span class="chip">Pandas</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ============ Projects ============ -->
+    <h2 style="margin-top: 4rem;">Technical Projects</h2>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <h3>Real-Time Equity Analytics Platform</h3>
+        <p class="meta">Kafka, Databricks, Snowflake, dbt · Oct 2025 – Dec 2025</p>
+        <ul>
+          <li>Designed and deployed a <strong>production-grade batch and streaming ELT medallion pipeline</strong> ingesting NYC School Climate and CDC Social Vulnerability Index data via Kafka and Dataproc into GCS Bronze/Silver layers, with Databricks Spark Structured Streaming and dbt-modeled Snowflake Gold marts powering district equity dashboards for policy and resource decisions.</li>
+          <li>Built a <strong>LangChain and Chroma RAG service</strong> with a FastAPI backend and React/TypeScript UI, embedding 5K+ SVI and school climate documents to enable natural language querying of equity metrics over validated Snowflake Gold data.</li>
+          <li>Provisioned the entire cloud infrastructure from scratch using <strong>Terraform across GCP, Snowflake, and Databricks</strong>, implementing DevSecOps practices — detect-secrets scanning, least-privilege IAM roles, and segregated GitHub Actions CI/CD with zero credentials in version control.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip sql">SQL</span>
+          <span class="chip">Kafka</span>
+          <span class="chip">Databricks</span>
+          <span class="chip">Snowflake</span>
+          <span class="chip">dbt</span>
+          <span class="chip">Terraform</span>
+        </p>
+      </div>
+
+      <div class="tl-item reveal">
+        <h3>Automated Compliance-Grade Document ETL Pipeline</h3>
+        <p class="meta">Python, JavaScript, Bash · Mar 2025 – May 2025</p>
+        <ul>
+          <li>Built a <strong>FERPA- and HIPAA-compliant ETL pipeline</strong> to extract, validate, and migrate 10,000+ protected student records from Apricot into Excel and SharePoint using Puppeteer-clustered PDF automation and a Tkinter GUI — reducing manual processing <strong>from months to minutes</strong>.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip js">JavaScript</span>
+          <span class="chip bash">Bash</span>
+        </p>
+      </div>
+
+      <!-- ── Data Science Projects ── -->
+      <div class="tl-item reveal">
+        <h3>Regression Analysis on SARS-CoV-2 RNA Concentrations in NYC Wastewater</h3>
+        <p class="meta">Data Science · Python, SQL · Oct 2023 – Oct 2024</p>
+        <ul>
+          <li>Built a production-aware <strong>RESTful API and custom SQLiteDB class</strong> with decorator-based error handling, timer logging, and input validation decorators to ingest and store NYC OpenData SARS-CoV-2 wastewater concentrations, implementing an optimized unique key extraction algorithm with <strong>O(n·m<sub>max</sub>) time complexity and O(k) space complexity</strong> for efficient JSON schema discovery across <strong>5,754 records</strong>.</li>
+          <li>Applied <strong>GridSearchCV-optimized A/B testing with 5-fold cross-validation</strong> across five regression models — SGD, Polynomial, Lasso, and Random Forest — across all <strong>14 NYC wastewater facility sites</strong>, achieving <strong>R² up to 0.95</strong> and identifying consistent seasonal concentration peaks aligned with citywide COVID-19 surge patterns to support public health reporting.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip sql">SQL</span>
+          <span class="chip">scikit-learn</span>
+          <span class="chip">REST API</span>
+          <span class="chip">SQLite</span>
+        </p>
+      </div>
+
+      <div class="tl-item reveal">
+        <h3>Student Adaptability Level Classifier in Online Education</h3>
+        <p class="meta">Data Science · Python · Bangladesh Dataset · Jul 2024</p>
+        <ul>
+          <li>Implemented a complete supervised classification pipeline on a Bangladeshi online education dataset — from hypothesis through EDA, One-Hot Encoding, and feature engineering to <strong>Naïve Bayes, KNN, and Random Forest</strong> classifiers evaluated via confusion matrices, cross-validation, and A/B testing across Low, Moderate, and High adaptability levels; Random Forest achieved the highest average <strong>F1 score of 0.837</strong>.</li>
+          <li>Trained and evaluated <strong>Naïve Bayes, K-Nearest Neighbors, and Random Forest</strong> classifiers across three adaptability levels (Low, Moderate, High), with oversampling/undersampling strategies to address class imbalance; Random Forest achieved the highest average <strong>F1 score of 0.837</strong>, selected via comparative A/B testing.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip">scikit-learn</span>
+          <span class="chip">Pandas</span>
+          <span class="chip">Matplotlib</span>
+          <span class="chip">Seaborn</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ============ Education & Publications ============ -->
+    <h2 style="margin-top: 4rem;">Education</h2>
+    <div class="card reveal">
+      <h3 style="margin-top: 0;">Adelphi University</h3>
+      <p class="meta" style="color: var(--ink-soft); font-weight: 600;">B.S. Physics · Minor, Philosophy · 2014 – 2018</p>
+      <ul>
+        <li>Specialization in Engineering, AI, and Data Analysis with advanced mathematics foundations.</li>
+        <li>Year-round NCAA D-II Cross Country and Track &amp; Field athlete.</li>
+      </ul>
+      <p style="margin-bottom: 0;"><strong>Fellowships (2022 – Present):</strong> Program Earth Software Engineering Fellow · TKH Data Science AEP Fellow, Data Engineering Track · TEC Innovate Google Fellow · CUNY GIS Research</p>
+    </div>
+
+    <h2 style="margin-top: 3rem;">Publications</h2>
+    <div class="card reveal">
+      <p>Krotov, A., Tebo, A., <strong>Picart, D.</strong>, Algave, A. (2024). <em>Evaluating authenticity and quality of image captions via sentiment and semantic analyses.</em> <a href="https://arxiv.org/abs/2409.09560">arXiv:2409.09560</a></p>
+      <p style="margin-bottom: 0;"><strong>Picart, D.</strong> (2018). <em>Method of Gas Detection Insensitive to Vibration.</em> Wright's Research Lab.</p>
+    </div>
+  </section>
+</Base>

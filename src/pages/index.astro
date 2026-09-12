@@ -1,0 +1,217 @@
+---
+// index.astro — the summary page.
+// Pipeline: Hero (source) → About (extract) → Projects (transform)
+//           → Experience (load) → Contact (sink)
+// Depth lives on the dedicated pages: /about, /projects, /resume
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects'))
+  .filter((p) => p.data.published && p.data.featured)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+---
+<Base spine={true}>
+
+  <!-- ============ HERO (source) ============ -->
+  <section id="hero" class="hero">
+    <p class="kicker">Data Engineering · Data Science · Machine Learning</p>
+    <h1 id="slogan">
+      <span class="word">Data</span> <span class="word">Science.</span>
+      <span class="word">Engineering.</span><br />
+      <span class="word">Community</span> <span class="word">Impact.</span>
+    </h1>
+    <p class="mission">
+      Data Engineer and Scientist building ethical, community-centered data systems
+      for socioeconomic, educational, and environmental impact. Physicist and
+      philosopher by training. Community-driven by design.
+    </p>
+  </section>
+
+  <!-- ============ ABOUT (extract) ============ -->
+  <section id="about">
+    <h2>About</h2>
+    <div class="card reveal">
+      <p>
+        Data Engineer and Scientist with 4+ years across enterprise, research,
+        and nonprofit environments — building cloud-native ETL/ELT pipelines
+        with Databricks, Kafka, Delta Lake, dbt, and Snowflake, and designing
+        end-to-end machine learning workflows from data collection to predictive
+        modeling and visualization. Committed to FERPA- and HIPAA-aligned
+        governance, applied statistical rigor, and analytical systems that
+        translate complex data into trustworthy, actionable decisions. A physicist
+        and philosopher by training, I bring an ethics-informed lens to secure,
+        resilient, and reproducible data systems.
+      </p>
+      <p>
+        <span class="chip python">Python</span>
+        <span class="chip sql">SQL</span>
+        <span class="chip bash">Bash</span>
+        <span class="chip js">JavaScript</span>
+        <span class="chip">PySpark</span>
+        <span class="chip">Databricks</span>
+        <span class="chip">dbt</span>
+        <span class="chip">Kafka</span>
+        <span class="chip">Snowflake</span>
+      </p>
+      <a class="btn" href="/about/">More about me →</a>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS (transform) ============ -->
+  <section id="projects">
+    <h2>Projects</h2>
+    <p style="color: var(--ink-soft);">Field notes from real pipelines — with the code that ran them.</p>
+
+    <ul class="project-list" id="project-list">
+      {projects.map((p) => (
+        <li>
+          <a
+            href={`/projects/${p.id}/`}
+            data-description={p.data.description}
+            data-langs={p.data.langs.join(',')}
+          >
+            <span>{p.data.title}</span>
+            <span class="date">{fmt(p.data.date)}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a class="btn" href="/projects/" style="margin-top: 2rem;">Browse all projects →</a>
+
+    <!-- Floating preview card, driven by GSAP on hover -->
+    <div class="preview" id="preview" aria-hidden="true">
+      <div id="preview-text"></div>
+      <div class="chips" id="preview-chips"></div>
+    </div>
+  </section>
+
+  <!-- ============ EXPERIENCE (load) ============ -->
+  <section id="experience">
+    <h2>Experience</h2>
+    <p style="color: var(--ink-soft);">The short version — the full story lives on the <a href="/resume/">resume page</a>.</p>
+
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <h3>Partnership With Children</h3>
+        <p class="meta">Data Analytics &amp; Engineering Intern · Jan 2025 – Jan 2026</p>
+        <ul>
+          <li>FERPA-compliant automated ETL pipeline migrating protected student records — a month-long manual workflow reduced to 7 minutes.</li>
+          <li>Consolidated 10+ years of NYSED, InfoHub, and internal datasets, reconciling discrepancies to within 0.5% across 30,000+ NYC students.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip js">JavaScript</span>
+          <span class="chip sql">SQL</span>
+          <span class="chip bash">Bash</span>
+        </p>
+      </div>
+
+      <div class="tl-item reveal">
+        <h3>Neuromatch</h3>
+        <p class="meta">NeuroAI · Comp Neuro · Deep Learning Researcher · 2024 – 2026</p>
+        <ul>
+          <li>Three research cohorts: gradient-free Node Perturbation learning benchmarked against Backprop (99% MNIST accuracy), GLMs decoding mouse visual cortex behavior, and NLP pipelines over 1.5M+ captions feeding a peer-reviewed publication.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip">PyTorch</span>
+          <span class="chip">HuggingFace</span>
+        </p>
+      </div>
+
+      <div class="tl-item reveal">
+        <h3>Annalect</h3>
+        <p class="meta">Data Engineering Apprentice · Aug 2022 – Nov 2022</p>
+        <ul>
+          <li>Optimized Airflow-orchestrated pipelines for pharma and media clients, cutting data latency 30%; terabyte-scale ETL/ELT across AWS.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip sql">SQL</span>
+          <span class="chip">Apache Airflow</span>
+          <span class="chip">AWS</span>
+          <span class="chip">PySpark</span>
+        </p>
+      </div>
+
+      <div class="tl-item reveal">
+        <h3>The Knowledge House</h3>
+        <p class="meta">Technical Instructor · Aug 2025 – Present</p>
+        <ul>
+          <li>Teaching Python, data science, web development, generative AI, and cybersecurity to teen and adult learners; developed responsible AI and digital literacy curriculum.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip js">JavaScript</span>
+          <span class="chip">Git/GitHub</span>
+          <span class="chip">Asana</span>
+          <span class="chip">Figma</span>
+          <span class="chip">Jupyter</span>
+          <span class="chip">Generative AI</span>
+          <span class="chip">Cybersecurity</span>
+        </p>
+        <p class="meta">Data Science Fellow · Sep 2021 – Sep 2022</p>
+        <ul>
+          <li>ETL pipelines ingesting and cleaning 500+ alumni records with geospatial engagement analysis — supporting a 20% lift in platform engagement.</li>
+        </ul>
+        <p>
+          <span class="chip python">Python</span>
+          <span class="chip sql">SQL</span>
+          <span class="chip bash">Bash</span>
+          <span class="chip">HTML/CSS</span>
+          <span class="chip">Pandas</span>
+        </p>
+      </div>
+    </div>
+
+    <a class="btn" href="/resume/">Full resume + PDF →</a>
+  </section>
+
+  <!-- ============ CONTACT (sink) ============ -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <div class="card">
+      <p>
+        Working on something at the intersection of data and community impact?
+        I'd love to hear about it.
+      </p>
+      <form class="contact-form" id="contact-form"
+            action="https://formspree.io/f/xwlkzdqj" method="POST"
+            novalidate>
+        <div class="field-wrap">
+          <label for="cf-name">Your name</label>
+          <input id="cf-name" type="text" name="name"
+                 placeholder="Ada Lovelace" autocomplete="name" />
+          <span class="field-error" id="err-name"></span>
+        </div>
+
+        <div class="field-wrap">
+          <label for="cf-email">Your email</label>
+          <input id="cf-email" type="email" name="email"
+                 placeholder="ada@example.com" autocomplete="email" />
+          <span class="field-error" id="err-email"></span>
+        </div>
+
+        <div class="field-wrap">
+          <label for="cf-message">Your message</label>
+          <textarea id="cf-message" name="message" rows="5"
+                    placeholder="Your message (20–3,000 characters)"></textarea>
+          <span class="field-error" id="err-message"></span>
+          <span class="char-count" id="char-count">0 / 3000</span>
+        </div>
+
+        <button type="submit" id="cf-submit">Get in touch</button>
+        <p class="status" id="cf-status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    import { initContactForm } from '../scripts/contact.js';
+    initContactForm();
+  </script>
+
+</Base>

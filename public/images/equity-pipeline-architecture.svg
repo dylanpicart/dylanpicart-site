@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 560" font-family="Inter, sans-serif">
+  <!-- Real-Time School Climate & Equity Pipeline — architecture -->
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1c1b22"/>
+    </marker>
+  </defs>
+  <style>
+    .lane  { fill: rgba(255,255,255,0.55); stroke: rgba(28,27,34,0.14); rx: 14; }
+    .box   { fill: #ffffff; stroke: #1c1b22; stroke-width: 1.6; rx: 10; }
+    .gold  { fill: #fff6d6; }
+    .t     { font-size: 13px; font-weight: 700; fill: #1c1b22; text-anchor: middle; }
+    .s     { font-size: 10px; font-weight: 600; fill: #4a4854; text-anchor: middle; }
+    .lane-label { font-size: 11px; font-weight: 800; fill: #6a3fb5; letter-spacing: 0.12em; }
+    .edge  { stroke: #1c1b22; stroke-width: 1.6; fill: none; marker-end: url(#arr); }
+    .title { font-size: 17px; font-weight: 800; fill: #1c1b22; }
+  </style>
+
+  <text class="title" x="20" y="30">Real-Time School Climate &amp; Equity Pipeline</text>
+
+  <!-- ================= STREAMING LANE ================= -->
+  <rect class="lane" x="20" y="52" width="900" height="110" rx="14"/>
+  <text class="lane-label" x="34" y="74">STREAMING PATH</text>
+  <rect class="box" x="40"  y="88" width="140" height="52"/>
+  <text class="t" x="110" y="110">NYC Climate API</text>
+  <text class="s" x="110" y="126">school climate microdata</text>
+
+  <rect class="box" x="240" y="88" width="140" height="52"/>
+  <text class="t" x="310" y="110">Kafka</text>
+  <text class="s" x="310" y="126">Confluent Cloud</text>
+
+  <rect class="box" x="440" y="88" width="170" height="52"/>
+  <text class="t" x="525" y="110">Databricks</text>
+  <text class="s" x="525" y="126">Spark Structured Streaming</text>
+
+  <rect class="box" x="670" y="88" width="140" height="52"/>
+  <text class="t" x="740" y="110">Delta Table</text>
+  <text class="s" x="740" y="126">exploration + modeling</text>
+
+  <line class="edge" x1="180" y1="114" x2="236" y2="114"/>
+  <line class="edge" x1="380" y1="114" x2="436" y2="114"/>
+  <line class="edge" x1="610" y1="114" x2="666" y2="114"/>
+
+  <!-- ================= BATCH LANE ================= -->
+  <rect class="lane" x="20" y="180" width="900" height="110" rx="14"/>
+  <text class="lane-label" x="34" y="202">BATCH PATH</text>
+  <rect class="box" x="40"  y="216" width="130" height="52"/>
+  <text class="t" x="105" y="238">CDC SVI API</text>
+  <text class="s" x="105" y="254">Python batch job</text>
+
+  <rect class="box" x="222" y="216" width="150" height="52"/>
+  <text class="t" x="297" y="238">Dataproc</text>
+  <text class="s" x="297" y="254">Serverless Spark</text>
+
+  <rect class="box" x="424" y="216" width="150" height="52"/>
+  <text class="t" x="499" y="238">GCS</text>
+  <text class="s" x="499" y="254">Bronze / Silver layers</text>
+
+  <rect class="box" x="626" y="216" width="90" height="52"/>
+  <text class="t" x="671" y="238">dbt</text>
+  <text class="s" x="671" y="254">models</text>
+
+  <rect class="box gold" x="768" y="216" width="132" height="52"/>
+  <text class="t" x="834" y="238">Snowflake</text>
+  <text class="s" x="834" y="254">Gold marts</text>
+
+  <line class="edge" x1="170" y1="242" x2="218" y2="242"/>
+  <line class="edge" x1="372" y1="242" x2="420" y2="242"/>
+  <line class="edge" x1="574" y1="242" x2="622" y2="242"/>
+  <line class="edge" x1="716" y1="242" x2="764" y2="242"/>
+
+  <!-- ================= ANALYTICS LANE ================= -->
+  <rect class="lane" x="20" y="308" width="900" height="110" rx="14"/>
+  <text class="lane-label" x="34" y="330">ANALYTICS PATH</text>
+  <rect class="box" x="40"  y="344" width="170" height="52"/>
+  <text class="t" x="125" y="366">Silver Parquet</text>
+  <text class="s" x="125" y="382">sampled</text>
+
+  <rect class="box" x="262" y="344" width="180" height="52"/>
+  <text class="t" x="352" y="366">Databricks Notebooks</text>
+  <text class="s" x="352" y="382">Gold modeling</text>
+
+  <rect class="box" x="494" y="344" width="90" height="52"/>
+  <text class="t" x="539" y="366">dbt</text>
+  <text class="s" x="539" y="382">tests + docs</text>
+
+  <rect class="box gold" x="636" y="344" width="132" height="52"/>
+  <text class="t" x="702" y="366">Snowflake</text>
+  <text class="s" x="702" y="382">validated Gold</text>
+
+  <line class="edge" x1="210" y1="370" x2="258" y2="370"/>
+  <line class="edge" x1="442" y1="370" x2="490" y2="370"/>
+  <line class="edge" x1="584" y1="370" x2="632" y2="370"/>
+
+  <!-- ================= CONSUMPTION ================= -->
+  <rect class="lane" x="20" y="436" width="900" height="104" rx="14"/>
+  <text class="lane-label" x="34" y="458">CONSUMPTION</text>
+  <rect class="box gold" x="330" y="470" width="280" height="52"/>
+  <text class="t" x="470" y="492">Power BI Dashboard</text>
+  <text class="s" x="470" y="508">borough trends · equity gaps · SVI overlays · school-level insights</text>
+
+  <!-- Converging edges into consumption -->
+  <path class="edge" d="M 834 268 C 834 300, 834 420, 560 470"/>
+  <path class="edge" d="M 702 396 C 702 420, 640 448, 540 468"/>
+  <path class="edge" d="M 740 140 C 900 180, 910 420, 614 478"/>
+</svg>
