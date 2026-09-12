@@ -85,6 +85,40 @@ a { color: var(--ink); text-underline-offset: 3px; }
   font-size: clamp(0.7rem, 2vw, 0.92rem); }
 .nav a:hover { text-decoration: underline; }
 
+/* ---- Tag filter bar ---- */
+.tag-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.8rem 0 0;
+}
+.tag-filter-btn {
+  padding: 0.25rem 0.85rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font: 700 0.75rem/1 'Inter', sans-serif;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.tag-filter-btn:hover,
+.tag-filter-btn.active {
+  background: var(--ink);
+  color: #fff;
+}
+
+/* ---- Section label (Professional Work / Research) ---- */
+.section-label {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 3rem;
+}
+
 /* ---- Article topic tags ---- */
 .tag-pill {
   display: inline-block;

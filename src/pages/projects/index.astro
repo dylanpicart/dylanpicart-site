@@ -12,6 +12,8 @@ const research     = all.filter((p) => p.data.section === 'research');
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+const allTags = [...new Set(all.flatMap((p) => p.data.tags))].sort();
 ---
 <Base title="Projects — Dylan K. Picart">
   <section>
@@ -20,14 +22,19 @@ const fmt = (d: Date) =>
       Field notes from real pipelines and published research — with the code that ran them.
     </p>
 
-    <!-- ── Professional Work ────────────────────────────────── -->
-    <h2 style="margin-top: 3rem; font-size: 1.15rem; font-weight: 800;
-               letter-spacing: 0.1em; text-transform: uppercase;
-               color: var(--ink-soft);">Professional Work</h2>
+      <div class="tag-filter" id="tag-filter" aria-label="Filter by topic">
+        <button class="tag-filter-btn active" data-tag="all">All</button>
+        {allTags.map((tag) => (
+          <button class="tag-filter-btn" data-tag={tag}>{tag}</button>
+        ))}
+      </div>
 
-    <div class="projects-grid" style="display: grid; gap: 1.4rem; margin-top: 1rem;">
+    <!-- ── Professional Work ────────────────────────────────── -->
+    <h2 class="section-label" id="label-professional">Professional Work</h2>
+
+    <div class="projects-grid" id="grid-professional" style="display: grid; gap: 1.4rem; margin-top: 1rem;">
       {professional.map((p) => (
-        <a href={`/projects/${p.id}/`} class="card reveal" style="text-decoration: none; display: block;">
+        <a href={`/projects/${p.id}/`} class="card reveal project-card" data-tags={p.data.tags.join(',')} style="text-decoration: none; display: block;">
           <p class="meta" style="font-size: 0.8rem; font-weight: 700; color: var(--ink-soft); margin: 0 0 0.4rem; letter-spacing: 0.06em; text-transform: uppercase;">
             {fmt(p.data.date)}
           </p>
@@ -50,13 +57,11 @@ const fmt = (d: Date) =>
     </div>
 
     <!-- ── Research ─────────────────────────────────────────── -->
-    <h2 style="margin-top: 4rem; font-size: 1.15rem; font-weight: 800;
-               letter-spacing: 0.1em; text-transform: uppercase;
-               color: var(--ink-soft);">Research</h2>
+    <h2 class="section-label" id="label-research" style="margin-top: 4rem;">Research</h2>
 
-    <div class="projects-grid" style="display: grid; gap: 1.4rem; margin-top: 1rem;">
+    <div class="projects-grid" id="grid-research" style="display: grid; gap: 1.4rem; margin-top: 1rem;">
       {research.map((p) => (
-        <a href={`/projects/${p.id}/`} class="card reveal" style="text-decoration: none; display: block;">
+        <a href={`/projects/${p.id}/`} class="card reveal project-card" data-tags={p.data.tags.join(',')} style="text-decoration: none; display: block;">
           <p class="meta" style="font-size: 0.8rem; font-weight: 700; color: var(--ink-soft); margin: 0 0 0.4rem; letter-spacing: 0.06em; text-transform: uppercase;">
             {fmt(p.data.date)}
           </p>
@@ -77,5 +82,53 @@ const fmt = (d: Date) =>
         </a>
       ))}
     </div>
+    <p id="no-results" style="display: none; color: var(--ink-soft); margin-top: 2rem; font-weight: 600;">
+      No projects match that tag.
+    </p>
   </section>
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons  = document.querySelectorAll('.tag-filter-btn');
+      const cards    = document.querySelectorAll('.project-card');
+      const labelPro = document.getElementById('label-professional');
+      const labelRes = document.getElementById('label-research');
+      const gridPro  = document.getElementById('grid-professional');
+      const gridRes  = document.getElementById('grid-research');
+      const noRes    = document.getElementById('no-results');
+
+      function filter(tag) {
+        let visiblePro = 0, visibleRes = 0;
+
+        cards.forEach((card) => {
+          const tags = (card.dataset.tags || '').split(',');
+          const show = tag === 'all' || tags.includes(tag);
+          card.style.display = show ? 'block' : 'none';
+          if (show) {
+            card.style.opacity = '1';
+            card.style.transform = 'none';
+          }
+
+          if (show) {
+            if (gridPro.contains(card)) visiblePro++;
+            if (gridRes.contains(card)) visibleRes++;
+          }
+        });
+
+        labelPro.style.display = visiblePro === 0 ? 'none' : '';
+        gridPro.style.display  = visiblePro === 0 ? 'none' : 'grid';
+        labelRes.style.display = visibleRes === 0 ? 'none' : '';
+        gridRes.style.display  = visibleRes === 0 ? 'none' : 'grid';
+
+        noRes.style.display = (visiblePro + visibleRes === 0) ? 'block' : 'none';
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          buttons.forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          filter(btn.dataset.tag);
+        });
+      });
+  });
+  </script>
 </Base>

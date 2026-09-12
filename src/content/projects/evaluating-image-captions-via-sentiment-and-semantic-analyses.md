@@ -3,7 +3,7 @@ title: "Evaluating authenticity and quality of image captions via sentiment and 
 description: "How sentiment and semantic variance analyses assess the quality of image captions in large datasets like COCO — examining how human-generated captions reflect meaning."
 date: 2024-09-14
 langs: [Python]
-tags: ["NLP", "Deep Learning", "Research", "Computer Vision"]
+tags: ["NLP", "Deep Learning", "Research", "Computer Vision", "Data Science"]
 published: true
 featured: false
 section: research
