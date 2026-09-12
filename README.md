@@ -1,6 +1,6 @@
 # dylanpicart.com — rebuilt from scratch 🚀
 
-Static Astro site. No WordPress, no hosting bill. Hosting is free on GitHub
+Static Astro site. Hosting is free on GitHub
 Pages; the only remaining cost is the domain itself.
 
 ## The stack
