@@ -29,7 +29,7 @@ Static Astro site. To be hosted on GitHub Pages.
 
 ```md
 ---
-title: "Your Post Title"
+title: "Post Title"
 description: "One or two sentences — this appears in the hover preview card."
 date: 2026-08-12
 langs: [Python, SQL]
