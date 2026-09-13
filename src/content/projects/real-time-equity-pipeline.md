@@ -3,7 +3,7 @@ title: "Building a Real-Time School Climate & Equity Analytics Platform"
 description: "A production-grade batch and streaming ELT platform investigating whether real-time school climate signals are leading indicators of future social vulnerability — Kafka, Databricks, Snowflake, dbt, and a RAG service that lets district leaders ask equity questions in plain English."
 date: 2026-01-15
 langs: [Python, SQL, YAML, Bash, JavaScript]
-tags: ["Data Engineering", "Compliance", "Public Health", "Open Data", "Streaming", "RAG", "Equity", "Cloud", "Research"]
+tags: ["Data Engineering", "Data Analysis", "Compliance", "DevSecOps", "Public Health", "Open Data", "Streaming", "RAG", "Equity", "Cloud", "Research"]
 published: true
 featured: true
 section: professional

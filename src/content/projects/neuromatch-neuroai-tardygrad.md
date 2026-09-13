@@ -3,7 +3,7 @@ title: "TardyGrad: Benchmarking Biologically Plausible Learning Against Backprop
 description: "Project TardyGrad benchmarks Node Perturbation, Predictive Coding, and Hebbian Learning against Backpropagation on MNIST — in standard ANNs and Spiking Neural Networks — then tests all three under delayed reward conditions to probe the limits of gradient-free learning."
 date: 2026-08-15
 langs: [Python]
-tags: ["NeuroAI", "Computational Neuroscience", "Machine Learning", "Research"]
+tags: ["NeuroAI", "Computational Neuroscience", "Machine Learning", "Data Science", "Research"]
 published: true
 featured: false
 section: research
