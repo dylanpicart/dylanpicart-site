@@ -3,7 +3,7 @@ title: "From Chaos to Clarity: A Lightweight Multilanguage ETL Pipeline for Exce
 description: "A practical, human-centered data migration framework blending Python, Bash, and JavaScript to automate the transition across SaaS platforms — making complex data accessible, secure, and easy to navigate."
 date: 2025-07-11
 langs: [Python, Bash, JavaScript]
-tags: ["Data Engineering", "ETL", "Compliance", "Nonprofit"]
+tags: ["Data Engineering", "ETL/ELT", "Compliance", "Nonprofit"]
 published: true
 featured: true
 section: professional

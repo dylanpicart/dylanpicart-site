@@ -3,7 +3,7 @@ title: "Building a DevSecOps-Ready GCP ETL Pipeline for Multi-Year Google Sheet 
 description: "A behind-the-scenes look at engineering a secure, reproducible, analytics-ready GCP ETL pipeline that automates ingestion and transformation of multi-year, multi-language Google Sheet survey data."
 date: 2025-11-15
 langs: [Bash, Python, YAML]
-tags: ["Data Engineering", "DevSecOps", "ETL", "Cloud", "Nonprofit"]
+tags: ["Data Engineering", "DevSecOps", "ETL/ELT", "Cloud", "Nonprofit"]
 published: true
 featured: false
 section: professional
