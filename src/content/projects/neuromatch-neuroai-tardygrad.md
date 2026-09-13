@@ -3,224 +3,256 @@ title: "TardyGrad: Benchmarking Biologically Plausible Learning Against Backprop
 description: "Project TardyGrad benchmarks Node Perturbation, Predictive Coding, and Hebbian Learning against Backpropagation on MNIST — in standard ANNs and Spiking Neural Networks — then tests all three under delayed reward conditions to probe the limits of gradient-free learning."
 date: 2026-08-15
 langs: [Python]
-tags: ["NeuroAI", "Biologically Plausible Learning", "Research", "PyTorch"]
+tags: ["NeuroAI", "Neuroscience", "Biologically Plausible Learning", "Research", "PyTorch"]
 published: true
 featured: false
 section: research
 ---
 
-**Neuromatch Academy — NeuroAI 2026 · Team: M. Miandari (TA), S. Bolotta (TA), D. Picart, V. Chokshi, A. G. Caldeira, L. Valenzuela, B. Bustos, S. Afridi, R. Zhou, J. Reback, J. Tabak**
+**Neuromatch Academy — NeuroAI 2026 · Team: M. Miandari (TA), S. Bolotta (TA),
+D. Picart, V. Chokshi, A. G. Caldeira, L. Valenzuela, B. Bustos, S. Afridi,
+R. Zhou, J. Reback, J. Tabak**
 
-Since brains learn remarkably well despite delays between actions and rewards, can we design artificial networks to do the same — and do it without backpropagation? That is the question at the center of Project TardyGrad. Over the summer, our nine-person team benchmarked biologically plausible (bio-plausible) learning rules against the dominant standard — backpropagation — across three experimental conditions: standard MNIST classification, Spiking Neural Networks, and a delayed-reward n-back task.
+Brains learn remarkably well despite two constraints that backpropagation doesn't
+share: rewards arrive late, and neurons can't send error signals backward through
+symmetric weights that don't exist in biology. Project TardyGrad asks whether
+artificial networks can learn under the same constraints — and which biologically
+plausible alternatives come closest to matching backpropagation's performance.
+
+My individual contribution was the **Node Perturbation implementation**: the full
+hyperparameter tuning pipeline, the training loop, and the comparative analysis
+against backprop and Hebbian learning across five seeds.
 
 ---
 
 ## The Problem with Backpropagation
 
-Backpropagation (BP) is the workhorse of modern machine learning, but it carries three biological implausibilities that prevent it from being a plausible model of how the brain actually learns:
+Backpropagation carries three biological implausibilities that prevent it from
+being a plausible model of how the brain learns:
 
-1. **Symmetric weight transport.** The forward and backward passes use identical weights, which requires a biological mechanism that doesn't exist — two neurons somehow sharing their weights in both directions simultaneously.
-2. **Update locking.** No layer can update until the full backward pass has completed, which means all layers are frozen while the gradient propagates — biologically unrealistic in a system where learning is continuous.
-3. **Downstream error dependence.** Every weight update requires knowledge of errors from layers that come *after* it, which means information must flow backward through the network in a precisely coordinated way.
+1. **Symmetric weight transport.** The forward and backward passes use identical
+   weights — a mechanism that doesn't exist in biology.
+2. **Update locking.** No layer can update until the full backward pass completes,
+   meaning all layers freeze while the gradient propagates.
+3. **Downstream error dependence.** Every weight update requires knowledge of
+   errors from layers that come *after* it.
 
-Real biological learning avoids all three. Hebbian learning is local: neurons update based on their own pre- and post-synaptic activity. Predictive Coding uses local prediction errors. Node Perturbation uses a global scalar reward signal without any backward pass. The question is whether these bio-plausible alternatives can match backpropagation's performance.
+Real biological learning avoids all three. Node Perturbation uses a global scalar
+reward signal, no backward pass, and no symmetric weights. The question is whether
+it can match backpropagation's performance.
 
 ---
 
 ## Three Research Questions
 
-**Q1:** Can bio-plausible learning rules (Node Perturbation, Predictive Coding, Hebbian) match backpropagation on MNIST classification?
+**Q1:** Can bio-plausible rules match backpropagation on standard MNIST?
 
-**Q2:** Do these learning rules generalize to Spiking Neural Networks, which are more biologically realistic than standard ANNs?
+**Q2:** Do they generalize to Spiking Neural Networks?
 
-**Q3:** How does all of this degrade under delayed feedback — the realistic condition where reward arrives some time after the action that caused it?
+**Q3:** How does performance degrade under delayed feedback?
 
 ---
 
-## The Learning Rules
+## Node Perturbation: Learning by Noise
 
-### Backpropagation (the benchmark)
+Instead of computing the exact gradient via a backward pass, Node Perturbation
+estimates it by running two forward passes and comparing the loss.
 
-The standard: compute the exact loss gradient via autograd, apply it via SGD. Every layer uses symmetric weights during the backward pass. No biological plausibility claims are made.
+**Clean pass:** run the network normally, record loss $L_0$.
 
-### Hebbian Learning — "Fire Together, Wire Together"
+**Perturbed pass:** inject random noise $\xi$ into every neuron's activation,
+record noisy loss $L_\xi$.
 
-The weight change is simply the product of presynaptic input and postsynaptic output. No error signal, no backward pass, nothing but local correlation:
-
-```python
-class HebbianFunction(torch.autograd.Function):
-    @staticmethod
-    def forward(context, input, weight, bias=None, nonlinearity=None, target=None):
-        output = input.mm(weight.t())
-        # Output clamped to target at the last layer — the one concession to supervision
-        if nonlinearity == "clamp" and target is not None:
-            output = target.float()
-        context.save_for_backward(input, weight, output)
-        return output
-
-    @staticmethod
-    def backward(context, grad_output):
-        # Hebbian update: pre × post, ignoring the upstream gradient entirely
-        input, weight, output = context.saved_tensors
-        grad_weight = -output.t().mm(input)  # accumulate correlations
-        return None, grad_weight, None, None, None
-```
-
-The "output clamped" version replaces the actual output with the one-hot target at the final layer when computing the update, giving the top layer some supervision signal while keeping all hidden layers purely Hebbian.
-
-### Node Perturbation — Learning by Noise
-
-Node Perturbation estimates the gradient by running *two forward passes* and comparing the loss, without ever computing a backward pass:
-
-**Clean pass:** run the network normally, record the loss L₀.
-**Noisy pass:** inject random noise ξ into every neuron's activation, record the noisy loss Lξ.
-**Update:** reinforce the perturbation if it helped (Lξ < L₀), reverse it if it hurt.
-
-The weight update formula:
-
-
+**Update:** reinforce the perturbation if it helped ($L_\xi < L_0$), reverse
+it if it hurt.
 
 $$
 \Delta W_l = \eta \cdot \frac{L_0 - L_\xi}{\sigma^2} \cdot \xi_l \, a_{l-1}^\top
 $$
 
+No symmetric weight transport. No update locking. No downstream error signals.
 
+![Node Perturbation — the four-step pipeline: Clean pass → Perturb → Noisy pass
+→ Local update. Formula: ΔWₗ = η · (L₀ − Lξ) / σ² · ξₗ aₗ₋₁ᵀ](/images/tardygrad-slide-node-perturbation.jpg)
 
-Where η is the learning rate, (L₀ − Lξ) is the global loss change, σ² is the noise variance, ξₗ is the postsynaptic noise, and aₗ₋₁ is the presynaptic activity. No symmetric weight transport, no update locking, no downstream error signals — three problems, one mechanism.
+One architectural subtlety worth naming: NP cannot be written as a per-layer
+custom autograd function, because its update requires a single **global** number
+— whether the whole network's loss improved from this perturbation — and that
+number doesn't exist until the full forward pass is compared to the target. The
+implementation sets `.grad` directly and lets the optimizer apply it unmodified.
 
-![Node Perturbation — MLP with learning without backpropagation. The four-step pipeline: Clean pass (compute L₀) → Perturb (add neural noise ξ) → Noisy pass (compute Lξ) → Local update (reinforce or reverse). Formula: ΔWₗ = η · (L₀ − Lξ) / σ² · ξₗ aₗ₋₁ᵀ. No symmetric weight transport, no update locking, no downstream error signals.](/images/tardygrad-slide-node-perturbation.jpg)
+One implementation decision distinguishes this from the course's reference: noise
+is injected into the hidden layer's **post-activation** firing rate and into the
+output layer's **pre-softmax** logits — not after the softmax, as the reference
+does. Perturbing pre-softmax keeps the output a valid probability distribution.
+Perturbing post-softmax doesn't. An antithetic variant was also implemented,
+running both $\xi$ and $-\xi$ and averaging the two updates for variance reduction
+at roughly 2× compute cost per step.
 
 ```python
-class NodePerturbationMultiLayerPerceptron(MultiLayerPerceptron):
-    def node_perturbation_step(self, X, y, sigma=0.1):
-        # Clean forward pass
-        with torch.no_grad():
-            logits_clean = self.forward(X)
-            loss_clean = F.cross_entropy(logits_clean, y).item()
+def node_perturbation_step(MLP, X, y, criterion_none, optimizer, generator=None):
+    out_clean, out_pert = MLP.perturbed_forward(X, generator=generator)
 
-        # Perturbed forward pass — noise injected at every hidden layer
-        noise = {}
-        with torch.no_grad():
-            x = X.view(-1, self.num_inputs)
-            for name, layer in self.named_modules():
-                if isinstance(layer, torch.nn.Linear):
-                    x = layer(x)
-                    xi = torch.randn_like(x) * sigma
-                    noise[name] = (xi, x.clone())
-                    x = x + xi
-            loss_pert = F.cross_entropy(x, y).item()
+    with torch.no_grad():
+        eps = 1e-12
+        loss_clean = criterion_none(torch.log(out_clean.clamp_min(eps)), y)
+        loss_pert  = criterion_none(torch.log(out_pert.clamp_min(eps)), y)
 
-        # Update: reinforce if loss decreased, reverse if it increased
-        reward = (loss_clean - loss_pert) / (sigma ** 2)
-        for name, layer in self.named_modules():
-            if isinstance(layer, torch.nn.Linear) and name in noise:
-                xi, pre = noise[name]
-                layer.weight.grad = -reward * xi.t().mm(pre)
+        # positive delta_loss = perturbation helped = reinforce it
+        delta_loss = loss_clean - loss_pert
+
+        cache = MLP._np_cache
+        batch_size = X.shape[0]
+
+        scaled_xi_h    = delta_loss.unsqueeze(1) * cache["xi_h"]   / MLP.noise_std**2
+        grad_W1_update = scaled_xi_h.t().mm(cache["X"]) / batch_size
+
+        scaled_xi_out  = delta_loss.unsqueeze(1) * cache["xi_out"] / MLP.noise_std**2
+        grad_W2_update = scaled_xi_out.t().mm(cache["h_pert"]) / batch_size
+
+        # BasicOptimizer subtracts grad * lr — negate so it adds the update
+        MLP.lin1.weight.grad = -grad_W1_update
+        MLP.lin2.weight.grad = -grad_W2_update
+
+    optimizer.step()
+    return loss_clean.mean().item()
 ```
 
-### Predictive Coding — Learning by Local Prediction Error
-
-A Predictive Coding Network (PCN) doubles the neurons: every layer l carries **value nodes xₗ** (the network's belief) paired with **error nodes εₗ** (the mismatch between prediction and reality). The whole network minimizes a single free energy F = ½ Σₗ ‖εₗ‖².
-
-Learning happens in two phases:
-
-**Inference (fast):** Hold the image fixed at x₀, clamp the label at xₗ, and let every other value node relax to minimize its prediction error:
-
-
-
-$$
-\frac{dx_l}{dt} = \gamma \left( -\varepsilon_l + f'(x_l) \cdot W_{l+1}^\top \varepsilon_{l+1} \right)
-$$
-
-
-
-**Weight update (slow):** Freeze xₗ and nudge Wₗ toward `εₗ f(xₗ₋₁)ᵀ` — error times input, both present at that synapse. This is a purely local update: each synapse only needs information available at its own location.
-
-The result is a network that descends the same loss surface as backpropagation, but using only local information at each synapse.
+Hyperparameters were tuned across four stages — sweeping `noise_std` and `lr`
+first on a 3-class subset, then validating on the full 10-class task. The final
+settings (`noise_std=0.15, lr=0.01`, 15 epochs) were confirmed across a joint
+grid. One finding worth noting: on the full 10-class task, the direction of
+the `noise_std` effect actually reversed depending on `lr` — the 3-class
+heuristics did not transfer, and the optimum had to be discovered independently.
+Higher `lr` consistently degraded both accuracy and stability as weights drifted
+far from initialization, a pattern that held across every condition tested.
 
 ---
 
-## Q1 Results: MNIST Classification (ANN)
+## Results: Full 10-Class MNIST
 
-| Learning Rule | Test Accuracy |
-|---|---|
-| Backpropagation | **99%** |
-| Predictive Coding | **99%** |
-| Node Perturbation | **99%** |
-| Hebbian (output clamped) | 36% |
+![Node Perturbation learning curve — loss drops sharply in the first two epochs
+then levels off; accuracy climbs to ~86% and stabilises, with train and validation
+tracking closely throughout 15 epochs.](/images/tardygrad-np-learning-curve.png)
 
-![MNIST results — Backprop 99%, Predictive Coding 99%, Node Perturbation 99%, Hebbian 36%. The three bio-plausible rules that include an error signal (PC and NP) converge immediately to backprop accuracy; Hebbian oscillates near chance throughout 10 epochs.](/images/tardygrad-slide-mnist-results.jpg)
+Across 5 seeds: **86.70% ± 0.73% accuracy**. All ten digit classes are genuinely
+learned — no class collapsed.
 
-**Predictive coding and node perturbation match backpropagation.** The Hebbian rule collapses to near chance. 
+![Per-class accuracy — digits 0 and 1 reach 97%; digits 3 and 8 are the weakest
+at ~77–79%. The orange dashed line marks 90%.](/images/tardygrad-np-per-class.png)
 
-The loss curves show an interesting nuance: Predictive Coding's cross-entropy is inflated by a scale artefact (it's trained with squared error on a linear output, not cross-entropy), but its accuracy matches exactly. The weight updates produced by PC's relaxation procedure are essentially identical to the true backprop gradient — cosine similarity ≈ 1.0 — confirming that PC is climbing the same hill without computing a gradient.
+The confusion matrix explains *why* 3 and 8 are the weakest — and they fail for
+different reasons.
 
-**Why does Hebbian fail?** The Hebbian rule has no error term, so nothing ever tells a weight it has gone too far. Weights grow without bound, saturating the hidden layer's sigmoid units and collapsing the representation to a near-binary code. This is a fundamental problem with pure correlation-based learning, not a tuning issue. A simple fix — centering the weight rows over time — partially recovers performance, but doesn't close the gap with error-based methods.
+![Confusion matrix — row-normalized to % of each true class. The single largest
+off-diagonal cell is true 3 predicted as 5 (9%). Digit 8's errors spread thinly
+across almost every other class.](/images/tardygrad-np-confusion-matrix.png)
 
----
+- **Digit 3** has one dominant failure mode: 9% of true 3s are predicted as 5 —
+  the largest off-diagonal cell in the entire matrix. A specific, concentrated
+  confusion.
+- **Digit 8** doesn't concentrate anywhere — errors spread thinly across almost
+  every other digit. Not confused with one lookalike; just uniformly difficult.
+- **The strongest asymmetric confusion overall is 4 → 9 (6%)** — geometrically
+  sensible, since 4 and 9 share a similar upper-loop stroke in handwriting.
 
-## Q2 Results: Spiking Neural Networks
-
-Spiking Neural Networks (SNNs) encode information in discrete spikes across time rather than continuous activations, making them more biologically realistic. We tested the same four learning rules on an SNN.
-
-| Learning Rule | SNN Performance |
-|---|---|
-| Backpropagation | ANN 97% → SNN 95% — small, graceful degradation |
-| Predictive Coding | ANN 92% → SNN 90% — matched BPTT closely |
-| Node Perturbation | ANN 84% → SNN **52%** — large drop; noisy and unstable |
-| Hebbian | ANN 10% → SNN 12% — failed in both settings |
-
-![SNN Test Accuracy on Four Learning Rules. Left: training curves — Backprop and PC converge quickly, NP is noisy and unstable, Hebbian stays at chance. Right: ANN vs SNN comparison — Backprop 97%/95%, PC 92%/90%, NP 84%/52% (large drop in SNN), Hebbian 10%/12%.](/images/tardygrad-slide-snn-results.jpg)
-
-BP and PC generalize to SNNs; NP and Hebbian do not.
-
-Node Perturbation's instability in the SNN setting is significant. The NP update assumes that the loss change is informative about the gradient, but in SNNs the discrete spiking dynamics make the loss landscape highly non-smooth — small perturbations produce discontinuous changes, and the reward signal becomes too noisy to guide learning reliably. **This identifies a meaningful boundary for gradient-free learning: NP works in smooth continuous networks, but struggles where discrete dynamics dominate.**
+The model's errors land in intuitively sensible places, which suggests it learned
+real digit structure rather than a rule-specific artifact.
 
 ---
 
-## Q3 Results: Delayed Reward — the n-back Task
+## Comparison Against Backprop and Hebbian
 
-In real biological learning environments, reward doesn't arrive immediately after the action that caused it. Dopamine release is delayed, feedback is temporally uncertain. Q3 tests how the learning rules degrade under this realistic condition.
+| Rule | Mean accuracy | Std |
+|---|---|---|
+| Backprop (15 epochs) | 92.28% | 0.08 |
+| **Node Perturbation** | **86.70%** | **0.73** |
+| Hebbian | 10.95% | 0.00 |
 
-We formulated MNIST classification as a **probabilistic n-back task**: the network sees a sequence of digits, but the error signal for digit at position t arrives only n steps later. Can a recurrent network learn to classify despite this temporal gap?
+All pairwise differences were statistically significant (one-way ANOVA F=56,979.7,
+p≈0; Bonferroni-corrected pairwise t-tests). Node perturbation is meaningfully
+behind backprop but genuinely functional — it learns all ten classes and
+generalizes. The ~9× higher run-to-run variance is a direct, expected consequence
+of estimating gradients from a single random perturbation rather than computing
+them exactly. Hebbian collapsed to predicting a single class for every input — a
+qualitatively different failure from "less accurate."
 
-**Architecture comparison:** We tested three architectures:
-- Feedforward MLP — no memory, baseline
-- Standard LSTM — designed for sequential tasks
-- Spiking LSTM — biologically richer neuron model
-
-**Critical engineering choices that unlocked performance:**
-- **Layer normalization** — prevented vanishing/exploding gradients during delayed credit assignment
-- **Learnable threshold** — adaptable firing threshold for Spiking LSTM neurons
-
-![2-Digit Delay — Test accuracy per model over variable delay steps (deterministic and probabilistic). LSTM and Spiking LSTM maintain high accuracy at short delays; MLP degrades faster. Probabilistic delay degrades performance more sharply across all models.](/images/tardygrad-slide-delay-2digit.jpg)
-
-![10-Digit Delay — Performance degrades faster still. Spiking LSTM shows the most robust performance at longer delays, suggesting temporal dynamics help with harder credit-assignment problems.](/images/tardygrad-slide-delay-10digit.jpg)
-
-**Results:** LSTMs untangle feedback delay; spiking networks achieved competitive performance across all conditions. Performance degrades faster as the delay window grows (2-digit delay vs. 10-digit delay). The Spiking LSTM showed more robust performance on the harder long-delay conditions — its inherent temporal dynamics provided an advantage exactly where it matters: under temporal uncertainty.
+**An honest caveat:** this comparison is fair in *procedure* but not in *tuning
+effort*. Node perturbation went through four rounds of hyperparameter sweeps;
+Hebbian ran at settings tuned for an easier 3-class task; backprop used its
+original default learning rate, never swept at all. The defensible claim is
+*"node perturbation, tuned, outperformed Hebbian and approached backprop at their
+existing settings, on this task, across 5 seeds"* — not *"node perturbation is
+the better biologically plausible rule in general."* That claim would require
+giving Hebbian the same tuning effort first.
 
 ---
 
-![Tied Answers — Q1: Yes, PC and NP perform as well as backprop; only Hebbian (no error term) collapses to chance. Q2: SNNs work as well as ANNs except when using Node Perturbation. Q3: Delayed feedback is a tough problem; Spiking LSTM shows more robust performance on harder conditions.](/images/tardygrad-slide-conclusions.jpg)
+## Q1: ANN Results
+
+![MNIST results — Backprop 99%, Predictive Coding 99%, Node Perturbation 99%,
+Hebbian 36%. BP, PC and NP converge immediately; Hebbian oscillates near chance
+throughout 10 epochs.](/images/tardygrad-slide-mnist-results.jpg)
+
+At the team level, both predictive coding and node perturbation matched
+backpropagation at 99% on MNIST. Hebbian collapsed to 36%. The results confirm
+that *some* form of error signal is necessary for learning — but it does not have
+to be the exact gradient backpropagation computes.
+
+---
+
+## Q2: Spiking Neural Networks
+
+![SNN Test Accuracy — Backprop 97%/95%, PC 92%/90%, NP 84%/52%, Hebbian 10%/12%.
+NP's 32-point drop is the largest degradation of any rule moving from ANN to SNN.](/images/tardygrad-slide-snn-results.jpg)
+
+NP's 32-point drop moving from ANN to SNN is the most striking result in the
+project. Discrete spiking dynamics make the loss landscape non-smooth — small
+perturbations produce discontinuous loss changes, making the reward signal too
+noisy to guide learning reliably. **This identifies a meaningful boundary for
+gradient-free learning: NP works in smooth continuous networks but struggles
+where discrete dynamics dominate.**
+
+---
+
+## Q3: Delayed Reward
+
+![2-Digit delay results — LSTM and Spiking LSTM maintain accuracy at short delays;
+MLP degrades faster under probabilistic conditions.](/images/tardygrad-slide-delay-2digit.jpg)
+
+![10-Digit delay results — performance degrades faster still. Spiking LSTM is the
+most robust at longer delays.](/images/tardygrad-slide-delay-10digit.jpg)
+
+LSTMs handle temporal gaps that destroy feedforward networks. The Spiking LSTM's
+advantage grows as the delay lengthens — suggesting that biological temporal
+dynamics are part of the solution to delayed credit assignment, not just a
+complication.
+
+---
 
 ## Conclusions
 
-**Q1 — Yes, bio-plausible rules can match backpropagation.** Predictive Coding and Node Perturbation both achieve 99% on MNIST. The Hebbian rule's failure is a feature, not a bug — it shows that *some* form of error signal is necessary, but it doesn't have to be the global gradient computed by backpropagation.
+![Tied answers — Q1: bio-plausible rules with an error signal match backprop.
+Q2: SNNs work well except with NP. Q3: delayed feedback is solvable; Spiking LSTM
+most robust.](/images/tardygrad-slide-conclusions.jpg)
 
-**Q2 — SNNs work as well as ANNs, except when using Node Perturbation.** NP's instability in the spiking setting reveals a meaningful boundary: gradient-free learning by perturbation requires smooth, continuous dynamics to produce informative reward signals.
-
-**Q3 — Delayed feedback is solvable, but hard.** LSTMs handle temporal gaps that destroy simple recurrent networks. The Spiking LSTM's performance advantage grows as the delay lengthens — suggesting that biological temporal dynamics are themselves part of the solution to the delayed credit assignment problem.
-
-The deepest finding is architectural: bio-plausible learning is not one thing. Node perturbation and predictive coding solve the same problem differently, and their failure modes under spiking dynamics and temporal delay are informative about what those differences actually mean for the brain.
+Bio-plausible learning is not one thing. Node perturbation and predictive coding
+solve the same problem differently, and their failure modes under spiking dynamics
+and temporal delay are informative about what those differences mean for the brain.
+The Hebbian rule's failure shows that a global error signal is necessary — but
+backpropagation's exact gradient is not.
 
 ---
 
 ## References
 
-1. Lillicrap, T.P. et al. (2020). Backpropagation and the brain. *Nature Reviews Neuroscience*, 21, 335–346.
-2. Kobayashi, S. & Schultz, W. (2008). Influence of reward delays on responses of dopamine neurons. *J. Neuroscience*, 28, 7837–7846.
-3. Eshraghian, J.K. et al. (2021). Training spiking neural networks using lessons from deep learning. *arXiv:2109.12894*.
-4. Bellec, G. et al. (2020). A solution to the learning dilemma for recurrent networks of spiking neurons. *Nature Communications*, 11, 3625.
-5. Fernández, J.G., Ahmad, N., & van Gerven, M. (2025). Noise-based reward-modulated learning. *arXiv:2503.23972*.
+1. Lillicrap, T.P. et al. (2020). Backpropagation and the brain.
+   *Nature Reviews Neuroscience*, 21, 335–346.
+2. Hiratani, N. et al. (2022). Stability and learning in excitatory synapses
+   by a nonlinear mechanism. *PLoS Computational Biology*.
+3. Eshraghian, J.K. et al. (2021). Training spiking neural networks using
+   lessons from deep learning. *arXiv:2109.12894*.
+4. Fernández, J.G., Ahmad, N., & van Gerven, M. (2025). Noise-based
+   reward-modulated learning. *arXiv:2503.23972*.
 
 *Code is maintained in a private repository.*
