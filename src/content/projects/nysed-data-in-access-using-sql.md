@@ -3,7 +3,7 @@ title: "Querying NYSED School Data in Microsoft Access Using SQL: Graduation, EL
 description: "How to use SQL in Microsoft Access to query NYSED education data for specific schools — real-world examples of filtering, joining, unions, and ordering datasets."
 date: 2025-10-16
 langs: [SQL]
-tags: ["Data Analysis", "SQL", "Education", "Open Data"]
+tags: ["Data Analysis", "Education", "Open Data"]
 published: true
 featured: false
 section: professional

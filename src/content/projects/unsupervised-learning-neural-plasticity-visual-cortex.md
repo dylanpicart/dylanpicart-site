@@ -3,7 +3,7 @@ title: "Encoding and Decoding Behavioral Signals in Mouse Visual Cortex: A GLM S
 description: "Fitting Generalized Linear Models to 50,000+ neuron recordings across V1 and higher visual areas of the mouse visual cortex to decode behavioral variables — lick, reward, cue, velocity, and texture — across supervised and unsupervised learning stages, extending Zhong et al. (Nature, 2025)."
 date: 2025-09-20
 langs: [Python]
-tags: ["Computational Neuroscience", "GLM", "Research", "Neuromatch"]
+tags: ["Computational Neuroscience", "Data Science", "Research"]
 published: true
 featured: false
 section: research

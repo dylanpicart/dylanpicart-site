@@ -3,7 +3,7 @@ title: "Why Microsoft VBA Still Matters: Automating Data Workflows in Excel with
 description: "Why Microsoft VBA still matters in 2025 — simple Excel macros that automate data workflows, streamline reports, and empower nonprofit and education teams."
 date: 2025-06-10
 langs: [VBA]
-tags: ["Data Analysis", "Automation", "VBA", "Nonprofit"]
+tags: ["Data Analysis", "Automation", "Nonprofit"]
 published: true
 featured: false
 section: professional

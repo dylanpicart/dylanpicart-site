@@ -3,7 +3,7 @@ title: "Student Adaptability Level Classifier in Online Education"
 description: "Extensive EDA with Python, pandas, and matplotlib, plus supervised ML with scikit-learn — training and evaluating classification models for student adaptability."
 date: 2023-07-01
 langs: [Python]
-tags: ["Data Science", "Machine Learning", "Classification", "Education", "Equity", "COVID-19"]
+tags: ["Data Science", "Machine Learning", "Education", "Equity", "COVID-19"]
 published: true
 featured: true
 section: professional

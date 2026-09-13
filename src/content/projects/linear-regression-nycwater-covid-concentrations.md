@@ -3,7 +3,7 @@ title: "Regression Analysis for SARS-CoV-2 RNA Concentrations in NYC Wastewater"
 description: "An analysis of trends in SARS-CoV-2 RNA concentrations in NYC wastewater during the height of the COVID-19 pandemic — API ingestion, SQLite modeling, and regression analysis."
 date: 2024-08-21
 langs: [Python]
-tags: ["Data Science", "Machine Learning", "Regression", "Public Health", "COVID-19"]
+tags: ["Data Science", "Machine Learning", "Public Health", "COVID-19"]
 published: true
 featured: true
 section: professional
